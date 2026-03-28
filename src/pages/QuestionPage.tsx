@@ -38,6 +38,7 @@ export default function QuestionPage() {
   const [showSteps, setShowSteps] = useState(false)
   const [visibleSteps, setVisibleSteps] = useState(0)
   const [showMistakes, setShowMistakes] = useState(false)
+  const [showMyMistakes, setShowMyMistakes] = useState(false)
 
   const storageKey = `notes-${slug}`
   const [notes, setNotes] = useState(() => {
@@ -93,6 +94,14 @@ export default function QuestionPage() {
         >
           {showMistakes ? 'Hide Mistakes' : 'Common Mistakes'}
         </button>
+        {question.myMistakes && question.myMistakes.length > 0 && (
+          <button
+            className="hint-btn my-mistakes-btn"
+            onClick={() => setShowMyMistakes(!showMyMistakes)}
+          >
+            {showMyMistakes ? 'Hide My Mistakes' : 'What I Did Wrong'}
+          </button>
+        )}
         <button
           className="hint-btn steps-btn"
           onClick={() => {
@@ -123,6 +132,41 @@ export default function QuestionPage() {
               <li key={i} className="mistake-item">{mistake}</li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {showMyMistakes && question.myMistakes && (
+        <div className="my-mistakes-container">
+          <h4>What I Did Wrong:</h4>
+          <div className="my-mistakes-list">
+            {question.myMistakes.map((m, i) => (
+              <div key={i} className="my-mistake-card">
+                <div className="my-mistake-wrong">
+                  <span className="my-mistake-label wrong-label">My Code</span>
+                  <code>{m.wrong}</code>
+                </div>
+                <div className="my-mistake-fix">
+                  <span className="my-mistake-label fix-label">Fix</span>
+                  <code>{m.fix}</code>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {question.apis && question.apis.length > 0 && (
+        <div className="apis-container">
+          <h4>Free APIs You Can Use:</h4>
+          <div className="apis-list">
+            {question.apis.map((api, i) => (
+              <div key={i} className="api-card">
+                <div className="api-name">{api.name}</div>
+                <p className="api-desc">{api.description}</p>
+                <code className="api-url">{api.url}</code>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

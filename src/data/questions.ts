@@ -1,5 +1,16 @@
 
 
+export interface Api {
+  name: string
+  url: string
+  description: string
+}
+
+export interface MyMistake {
+  wrong: string
+  fix: string
+}
+
 export interface Question {
   id: number
   title: string
@@ -7,6 +18,8 @@ export interface Question {
   hint: string
   steps: string[]
   mistakes: string[]
+  myMistakes?: MyMistake[]
+  apis?: Api[]
   difficulty: string
   slug: string
 }
@@ -42,6 +55,18 @@ export const questions: Question[] = [
       'Leaving console.log everywhere — remove them before submitting in an interview',
       'Calling setEditId(null) twice — duplicate setState calls are unnecessary',
     ],
+    myMistakes: [
+      { wrong: 'setTodoData(todoData.push(inputVale))', fix: 'setTodos([...todos, { id: Date.now(), text: inputValue, completed: false }]) — .push() mutates and returns a number' },
+      { wrong: 'Variable named inputVale (typo)', fix: 'inputValue — always double-check variable names' },
+      { wrong: 'onClick={deleteTodo(index)} — called on every render', fix: 'onClick={() => deleteTodo(item.id)} — wrap in arrow function' },
+      { wrong: '.map() with curly braces {} but no return', fix: 'Either add return or use parentheses () for implicit return' },
+      { wrong: 'key={index} on <li> inside a fragment <>', fix: 'key={item.id} on the outermost element like <div> or <li>' },
+      { wrong: 'Edit: setTodos(todos.filter(todo => todo.id === id)) — removed all other todos', fix: 'Use .find() to get the item text, .map() to update it — filter is for delete' },
+      { wrong: 'setInputValue(todos) — passed entire array to string state', fix: 'setInputValue(todo.text) — pass the specific text string' },
+      { wrong: 'setEditId(null) called twice (duplicate)', fix: 'Call it only once — duplicate setState is unnecessary' },
+      { wrong: 'Used id: any type', fix: 'Use id: number — avoid any in interviews' },
+      { wrong: 'console.log everywhere', fix: 'Remove all console.logs before submitting' },
+    ],
     difficulty: 'Medium',
   },
   {
@@ -64,6 +89,21 @@ export const questions: Question[] = [
       'Fetching on every keystroke without debounce — causes unnecessary API calls',
       'Not handling empty search term — check if searchTerm is empty before filtering/fetching',
       'Using setState inside setTimeout without cleanup causes memory leaks on unmount',
+    ],
+    myMistakes: [
+      { wrong: 'No return () => clearTimeout(timer) in useEffect', fix: 'Always return cleanup — this IS the debounce. Without it every keystroke fires a separate API call' },
+      { wrong: 'setShoowResult(data.filter(...)) — filtering data that hasnt loaded yet', fix: 'data is still [] when filter runs because fetchData is async. Filter AFTER await inside the async callback' },
+      { wrong: 'value === searchValue — comparing full user object with a string', fix: 'user.name.toLowerCase().includes(searchValue.toLowerCase()) — compare a specific field' },
+      { wrong: 'showResult is useState("") string but set to an array with filter', fix: 'Use useState<any[]>([]) — match the type to what you are storing' },
+      { wrong: 'Variable typo: setShoowResult', fix: 'setShowResult — typos cause bugs that are hard to find' },
+      { wrong: 'No loading state — user sees nothing while searching', fix: 'Add const [loading, setLoading] = useState(false) and show "Searching..." text' },
+      { wrong: 'No check for empty search term — fetches even when input is empty', fix: 'Add if (!searchValue.trim()) { setResults([]); return } at the top of useEffect' },
+      { wrong: 'Used axios instead of built-in fetch', fix: 'Both work but fetch is built-in and preferred in interviews — no extra dependency needed' },
+    ],
+    apis: [
+      { name: 'JSONPlaceholder Users', url: 'https://jsonplaceholder.typicode.com/users', description: 'Returns 10 users — search by name, email, or username' },
+      { name: 'DummyJSON Products Search', url: 'https://dummyjson.com/products/search?q=phone', description: 'Search products — replace "phone" with search term' },
+      { name: 'Rest Countries', url: 'https://restcountries.com/v3.1/name/india', description: 'Search countries by name — replace "india" with search term' },
     ],
     difficulty: 'Medium',
   },
@@ -110,6 +150,12 @@ export const questions: Question[] = [
       'Calling async function directly in useEffect — define async inside and call it, or use .then()',
       'Not clearing error state before retry — set error=null at the start of fetchData',
       'Missing [] dependency in useEffect — causes infinite fetch loop on every render',
+    ],
+    apis: [
+      { name: 'JSONPlaceholder Users', url: 'https://jsonplaceholder.typicode.com/users', description: 'Returns 10 users with name, email, phone, company' },
+      { name: 'JSONPlaceholder Posts', url: 'https://jsonplaceholder.typicode.com/posts', description: 'Returns 100 posts with title and body' },
+      { name: 'DummyJSON Products', url: 'https://dummyjson.com/products', description: 'Returns 30 products with title, price, thumbnail' },
+      { name: 'Random User', url: 'https://randomuser.me/api/?results=10', description: 'Returns 10 random users with name, email, picture' },
     ],
     difficulty: 'Easy',
   },
@@ -230,6 +276,11 @@ export const questions: Question[] = [
       'Not checking hasMore before fetching — causes unnecessary calls after all data is loaded',
       'Forgetting to disconnect the IntersectionObserver in cleanup — causes memory leaks',
       'Loading multiple pages at once because observer fires repeatedly — check !loading before fetching',
+    ],
+    apis: [
+      { name: 'JSONPlaceholder Posts (paginated)', url: 'https://jsonplaceholder.typicode.com/posts?_page=1&_limit=10', description: 'Returns 10 posts per page — change _page=1,2,3... for pagination' },
+      { name: 'DummyJSON Products (paginated)', url: 'https://dummyjson.com/products?limit=10&skip=0', description: 'Returns 10 products — change skip=0,10,20... for pagination' },
+      { name: 'JSONPlaceholder Photos', url: 'https://jsonplaceholder.typicode.com/photos?_page=1&_limit=10', description: 'Returns 10 photos with thumbnails — great for visual infinite scroll' },
     ],
     difficulty: 'Hard',
   },
