@@ -11,6 +11,11 @@ export interface MyMistake {
   fix: string
 }
 
+export interface QuestionRating {
+  score: number
+  comment: string
+}
+
 export interface Question {
   id: number
   title: string
@@ -19,6 +24,7 @@ export interface Question {
   steps: string[]
   mistakes: string[]
   myMistakes?: MyMistake[]
+  rating?: QuestionRating
   apis?: Api[]
   difficulty: string
   slug: string
@@ -67,6 +73,7 @@ export const questions: Question[] = [
       { wrong: 'Used id: any type', fix: 'Use id: number — avoid any in interviews' },
       { wrong: 'console.log everywhere', fix: 'Remove all console.logs before submitting' },
     ],
+    rating: { score: 5, comment: 'Good approach but many implementation bugs — .push(), wrong key placement, typos, duplicate setState, used any type' },
     difficulty: 'Medium',
   },
   {
@@ -100,6 +107,7 @@ export const questions: Question[] = [
       { wrong: 'No check for empty search term — fetches even when input is empty', fix: 'Add if (!searchValue.trim()) { setResults([]); return } at the top of useEffect' },
       { wrong: 'Used axios instead of built-in fetch', fix: 'Both work but fetch is built-in and preferred in interviews — no extra dependency needed' },
     ],
+    rating: { score: 4, comment: 'Missing cleanup (the whole point of debounce), filtered before data loaded, wrong types, typos in variable names' },
     apis: [
       { name: 'JSONPlaceholder Users', url: 'https://jsonplaceholder.typicode.com/users', description: 'Returns 10 users — search by name, email, or username' },
       { name: 'DummyJSON Products Search', url: 'https://dummyjson.com/products/search?q=phone', description: 'Search products — replace "phone" with search term' },
@@ -128,6 +136,7 @@ export const questions: Question[] = [
       'Allowing quantity to go below 0 — add a check or remove item when quantity hits 0',
       'Calculating total inside state instead of deriving it — derive with .reduce() during render',
     ],
+    rating: { score: 6, comment: 'Good approach — knew about .find() and quantity check. Typo quentity, used spread wrong with setAddToCartData(...filterd)' },
     difficulty: 'Medium',
   },
   {
@@ -151,6 +160,7 @@ export const questions: Question[] = [
       'Not clearing error state before retry — set error=null at the start of fetchData',
       'Missing [] dependency in useEffect — causes infinite fetch loop on every render',
     ],
+    rating: { score: 6, comment: 'Good structure — 3 states, try/catch, useEffect with []. But setLoading(true) in catch, setError(error) object to string, typo fetchDatta' },
     apis: [
       { name: 'JSONPlaceholder Users', url: 'https://jsonplaceholder.typicode.com/users', description: 'Returns 10 users with name, email, phone, company' },
       { name: 'JSONPlaceholder Posts', url: 'https://jsonplaceholder.typicode.com/posts', description: 'Returns 100 posts with title and body' },
