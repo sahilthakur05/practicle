@@ -1,0 +1,95 @@
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text);
+  margin-bottom: 32px;
+}
+
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: var(--shadow);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 20px;
+  flex: 1;
+}
+
+.difficulty {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border: 1.5px solid;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.badge {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.description {
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.hint-btn {
+  font-size: 14px;
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.hint-btn:hover {
+  opacity: 0.8;
+}
+
+.hint {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: var(--code-bg);
+  border-radius: 8px;
+  line-height: 1.6;
+  font-size: 15px;
+}
