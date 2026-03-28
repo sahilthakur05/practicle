@@ -5,6 +5,8 @@ export interface Question {
   title: string
   description: string
   hint: string
+  steps: string[]
+  mistakes: string[]
   difficulty: string
   slug: string
 }
@@ -16,6 +18,30 @@ export const questions: Question[] = [
     title: 'Todo List with CRUD Operations',
     description: 'Build a todo app where users can add, edit, delete, and mark tasks as completed. Include a filter to show All / Active / Completed todos.',
     hint: 'Use useState with an array of { id, text, completed, isEditing }. For editing, toggle isEditing to swap between a <span> and an <input>. Use a separate filter state ("all" | "active" | "completed") and derive the visible list with .filter().',
+    steps: [
+      'Create state: const [todos, setTodos] = useState<{id: number, text: string, completed: boolean}[]>([])',
+      'Create input state: const [inputValue, setInputValue] = useState("")',
+      'Add todo: use spread operator — setTodos([...todos, { id: Date.now(), text: inputValue, completed: false }])',
+      'Never use .push() with setState — it mutates the array and returns a number, not a new array',
+      'Delete: setTodos(todos.filter(todo => todo.id !== id))',
+      'Toggle complete: setTodos(todos.map(t => t.id === id ? {...t, completed: !t.completed} : t))',
+      'Edit: add isEditing flag, swap <span> to <input> when true',
+      'Render list with .map() — always provide a unique key prop',
+      'Clear input after adding: setInputValue("")',
+    ],
+    mistakes: [
+      'Using .push() with setState — it mutates the array and returns a number, not a new array. Use spread: setTodos([...todos, newTodo])',
+      'Using index as key in .map() — use a unique id (like Date.now()) instead. Index keys cause bugs when items are reordered or deleted',
+      'Putting key on <li> inside a fragment <> — key must be on the outermost element. Use <div key={id}> instead of <><li key={id}>',
+      'onClick={deleteTodo(id)} calls the function immediately on render. Use onClick={() => deleteTodo(id)} to pass a function reference',
+      'Using .map() with curly braces {} but forgetting return — either add return or use parentheses ()',
+      'Filtering todos to edit them — filter removes items. Use .find() to get the item, .map() to update it',
+      'setInputValue(todos) — passing an array/object to a string state. Use todo.text instead',
+      'Using type "any" — use proper types like number, string. Avoid any in interviews',
+      'Not validating empty input — always check if inputValue.trim() !== "" before adding',
+      'Leaving console.log everywhere — remove them before submitting in an interview',
+      'Calling setEditId(null) twice — duplicate setState calls are unnecessary',
+    ],
     difficulty: 'Medium',
   },
   {
@@ -24,6 +50,21 @@ export const questions: Question[] = [
     title: 'Debounced Search Input (API Call)',
     description: 'Create a search input that fetches results from an API but waits 500ms after the user stops typing before making the request. Show loading state while fetching.',
     hint: 'Use useEffect with the search term as a dependency. Inside, set a setTimeout of 500ms to call the API, and return a cleanup function that calls clearTimeout. This cancels the previous timer on every keystroke — only the last one fires.',
+    steps: [
+      'Create state for searchTerm, results, and loading',
+      'Use useEffect with [searchTerm] as dependency',
+      'Inside useEffect: const timer = setTimeout(() => { /* fetch here */ }, 500)',
+      'Return cleanup: return () => clearTimeout(timer)',
+      'This cancels previous timer on every keystroke — only the last one fires',
+      'Use a static array of data instead of API — filter it with .filter(item => item.toLowerCase().includes(searchTerm))',
+      'Show "Searching..." while the timeout is pending',
+    ],
+    mistakes: [
+      'Not cleaning up setTimeout — always return () => clearTimeout(timer) in useEffect',
+      'Fetching on every keystroke without debounce — causes unnecessary API calls',
+      'Not handling empty search term — check if searchTerm is empty before filtering/fetching',
+      'Using setState inside setTimeout without cleanup causes memory leaks on unmount',
+    ],
     difficulty: 'Medium',
   },
   {
@@ -32,6 +73,21 @@ export const questions: Question[] = [
     title: 'Shopping Cart',
     description: 'Build a product list with an "Add to Cart" button. The cart should support increasing/decreasing quantity, removing items, and showing the total price.',
     hint: 'Keep products in a static array and cart items in useState as an array of { productId, quantity }. When adding, check if the item already exists — if yes, increment quantity. Derive the total with .reduce(). Bonus: use useReducer instead of useState for cart actions.',
+    steps: [
+      'Create a static products array: [{ id, name, price, image }]',
+      'Create cart state: useState<{productId: number, quantity: number}[]>([])',
+      'Add to cart: check if item exists with .find(), if yes increment quantity with .map(), if no append with spread',
+      'Remove from cart: use .filter(item => item.productId !== id)',
+      'Increase/decrease quantity: use .map() to update the matching item',
+      'Calculate total: cart.reduce((sum, item) => sum + item.quantity * getPrice(item.productId), 0)',
+      'Show product list and cart side by side',
+    ],
+    mistakes: [
+      'Mutating cart state directly with .push() — always create a new array with spread',
+      'Adding duplicate items instead of incrementing quantity — check with .find() first',
+      'Allowing quantity to go below 0 — add a check or remove item when quantity hits 0',
+      'Calculating total inside state instead of deriving it — derive with .reduce() during render',
+    ],
     difficulty: 'Medium',
   },
   {
@@ -40,6 +96,21 @@ export const questions: Question[] = [
     title: 'Fetch Data with Loading, Error & Retry',
     description: 'Fetch data from a public API (e.g., JSONPlaceholder). Handle loading spinner, error message with a Retry button, and display the data in a list.',
     hint: 'Track three states: data, loading, error. Wrap the fetch in a function so you can call it on mount (useEffect) and also on Retry click. Use try/catch with async/await. Always set loading to false in a finally block.',
+    steps: [
+      'Create three states: data (array), loading (boolean), error (string | null)',
+      'Create an async function fetchData that sets loading=true, tries fetch, catches error',
+      'Use try/catch/finally — set loading=false in finally block',
+      'Call fetchData inside useEffect with [] dependency',
+      'For no-API version: simulate with setTimeout + static data',
+      'Render: if loading show spinner, if error show message + Retry button, else show data list',
+      'Retry button calls fetchData again',
+    ],
+    mistakes: [
+      'Not setting loading=false in finally block — if fetch throws, loading stays true forever',
+      'Calling async function directly in useEffect — define async inside and call it, or use .then()',
+      'Not clearing error state before retry — set error=null at the start of fetchData',
+      'Missing [] dependency in useEffect — causes infinite fetch loop on every render',
+    ],
     difficulty: 'Easy',
   },
   {
@@ -48,6 +119,22 @@ export const questions: Question[] = [
     title: 'Multi-Step Form with Validation',
     description: 'Build a 3-step registration form (Personal Info → Address → Review & Submit). Each step should validate before allowing "Next". Show all data on the review step.',
     hint: 'Use useState for currentStep and a single formData object. Create a separate component for each step, passing formData and a setter. Validate the current step\'s fields before incrementing the step. On the final step, display a summary of all fields.',
+    steps: [
+      'Create state: currentStep (number) and formData ({ name, email, address, city, password })',
+      'Create an errors state object to track validation messages',
+      'Step 1 — Personal Info: name, email, password inputs',
+      'Step 2 — Address: address, city, zip inputs',
+      'Step 3 — Review: display all formData in a summary, Submit button',
+      'On "Next": validate current step fields — if errors, show them and block navigation',
+      'On "Back": just decrement step, no validation needed',
+      'Use a switch/if on currentStep to render the correct step',
+    ],
+    mistakes: [
+      'Resetting formData when switching steps — use a single shared state object across all steps',
+      'Validating all fields on every step — only validate the current step fields',
+      'Not preserving input values when going Back — keep all data in one formData state',
+      'Using separate useState for each field — use one object state for cleaner code',
+    ],
     difficulty: 'Hard',
   },
   {
@@ -56,6 +143,21 @@ export const questions: Question[] = [
     title: 'Build a Custom Hook: useLocalStorage',
     description: 'Create a custom hook useLocalStorage(key, initialValue) that works like useState but persists the value in localStorage. Use it in a small demo app.',
     hint: 'Initialize state with a function that reads from localStorage (JSON.parse) or falls back to initialValue. Use useEffect to write to localStorage (JSON.stringify) whenever the value changes. Return [value, setValue] just like useState.',
+    steps: [
+      'Create function useLocalStorage(key: string, initialValue: T)',
+      'Initialize state with lazy initializer: useState(() => { try to read from localStorage })',
+      'Use JSON.parse(localStorage.getItem(key)) — wrap in try/catch for safety',
+      'If nothing in storage, fall back to initialValue',
+      'useEffect: whenever value changes, localStorage.setItem(key, JSON.stringify(value))',
+      'Return [value, setValue] — same signature as useState',
+      'Demo: use it for a name input or theme preference that survives page refresh',
+    ],
+    mistakes: [
+      'Not wrapping JSON.parse in try/catch — corrupted localStorage data will crash the app',
+      'Using useEffect for initial read — use lazy initializer in useState(() => ...) instead, its faster',
+      'Forgetting JSON.stringify when saving — objects will be stored as "[object Object]"',
+      'Not handling the case when localStorage is unavailable (private browsing)',
+    ],
     difficulty: 'Medium',
   },
   {
@@ -64,6 +166,21 @@ export const questions: Question[] = [
     title: 'Accordion / FAQ (Single & Multi Open)',
     description: 'Create an accordion component that supports two modes — single open (only one panel at a time) and multi open (any number of panels can be open).',
     hint: 'For single mode, store activeIndex (number | null). For multi mode, store openIndexes as a Set or array. Toggle logic: single uses === check and sets null; multi uses Set.has() and add/delete. Pass the mode as a prop.',
+    steps: [
+      'Create a static FAQ data array: [{ question, answer }]',
+      'For single mode: useState<number | null>(null) for activeIndex',
+      'On click: setActiveIndex(activeIndex === index ? null : index)',
+      'Show answer only when activeIndex === index',
+      'For multi mode: useState<number[]>([]) for openIndexes',
+      'On click: toggle index in/out of the array using includes() and filter()/spread',
+      'Add a toggle button to switch between single and multi mode',
+    ],
+    mistakes: [
+      'Using separate useState for each panel — use one activeIndex state for single mode',
+      'Not closing the current panel when clicking it again — check if index === activeIndex and set null',
+      'Using index as key when FAQ items can change — use a stable id',
+      'Forgetting to reset state when switching between single and multi mode',
+    ],
     difficulty: 'Easy',
   },
   {
@@ -72,6 +189,23 @@ export const questions: Question[] = [
     title: 'Stopwatch with Lap Times',
     description: 'Build a stopwatch with Start, Stop, Reset, and Lap buttons. Display the elapsed time in mm:ss:ms format and a list of recorded lap times.',
     hint: 'Use useRef for the interval ID and the start timestamp. Use useState for elapsed time (in ms) and laps array. On Start: save Date.now() - elapsed to ref, then setInterval updating elapsed = Date.now() - startRef. On Lap: push current elapsed to laps array. Format with Math.floor and padStart.',
+    steps: [
+      'Create state: elapsed (number in ms), isRunning (boolean), laps (number[])',
+      'Create refs: intervalRef = useRef(null), startTimeRef = useRef(0)',
+      'Start: startTimeRef = Date.now() - elapsed, then setInterval every 10ms updating elapsed',
+      'Stop: clearInterval(intervalRef.current)',
+      'Reset: clearInterval, set elapsed=0, laps=[], isRunning=false',
+      'Lap: setLaps([...laps, elapsed])',
+      'Format time: minutes = Math.floor(elapsed / 60000), seconds = Math.floor((elapsed % 60000) / 1000), ms = Math.floor((elapsed % 1000) / 10)',
+      'Use .toString().padStart(2, "0") for formatting',
+      'Cleanup: useEffect return () => clearInterval(intervalRef.current)',
+    ],
+    mistakes: [
+      'Using useState for interval ID — use useRef instead, setState causes re-render and restarts the interval',
+      'Not clearing interval on unmount — causes memory leak, always clean up in useEffect return',
+      'Using setInterval with state directly — stale closure issue, use Date.now() - startTime pattern instead',
+      'Forgetting to subtract existing elapsed time when resuming after stop',
+    ],
     difficulty: 'Medium',
   },
   {
@@ -80,6 +214,23 @@ export const questions: Question[] = [
     title: 'Infinite Scroll / Load More',
     description: 'Display a list of items and automatically load the next page when the user scrolls near the bottom. Show a loading indicator while fetching.',
     hint: 'Use useEffect + IntersectionObserver on a sentinel <div> at the bottom of the list. When it becomes visible, fetch the next page and append to the existing data. Track currentPage and hasMore in state. Alternatively, use a "Load More" button as a simpler version.',
+    steps: [
+      'Create a large static data array (50+ items) to simulate paginated data',
+      'State: items (displayed), page (number), loading (boolean), hasMore (boolean)',
+      'Page size = 10 items, slice data based on current page',
+      'Simple version: add a "Load More" button that loads the next page',
+      'Advanced version: use IntersectionObserver on a sentinel div at bottom',
+      'Create a ref for the sentinel div, observe it in useEffect',
+      'When sentinel is visible and !loading and hasMore → load next page',
+      'Append new items: setItems(prev => [...prev, ...newItems])',
+      'Set hasMore = false when all data is loaded',
+    ],
+    mistakes: [
+      'Replacing items instead of appending — use setItems(prev => [...prev, ...newItems]) not setItems(newItems)',
+      'Not checking hasMore before fetching — causes unnecessary calls after all data is loaded',
+      'Forgetting to disconnect the IntersectionObserver in cleanup — causes memory leaks',
+      'Loading multiple pages at once because observer fires repeatedly — check !loading before fetching',
+    ],
     difficulty: 'Hard',
   },
   {
@@ -88,6 +239,22 @@ export const questions: Question[] = [
     title: 'Modal / Popup with Portal',
     description: 'Build a reusable Modal component that renders using React Portal. It should close on overlay click, Escape key press, and have smooth enter/exit transitions.',
     hint: 'Use ReactDOM.createPortal() to render the modal into document.body. Use useEffect to add a keydown listener for "Escape" and clean it up on unmount. Prevent event bubbling on the modal content div so clicking inside doesn\'t close it (e.stopPropagation).',
+    steps: [
+      'Create a Modal component that accepts isOpen, onClose, children props',
+      'If !isOpen, return null',
+      'Use ReactDOM.createPortal(<overlay>, document.body) to render outside #root',
+      'Overlay div: position fixed, full screen, dark background, onClick={onClose}',
+      'Content div: centered box, onClick={(e) => e.stopPropagation()} to prevent closing',
+      'useEffect: add keydown listener for "Escape" key → call onClose',
+      'Return cleanup: remove the event listener',
+      'Demo: button that opens modal with some content and a close button',
+    ],
+    mistakes: [
+      'Not using createPortal — modal renders inside parent and inherits its CSS (overflow, z-index issues)',
+      'Forgetting e.stopPropagation() on content div — clicking inside the modal closes it',
+      'Not removing keydown event listener on unmount — causes memory leak and stale handlers',
+      'Not preventing body scroll when modal is open — add overflow:hidden to body',
+    ],
     difficulty: 'Medium',
   },
 ]

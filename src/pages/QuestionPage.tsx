@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { questions } from '../data/questions'
 
 import TodoList from './TodoList'
@@ -35,6 +35,31 @@ const difficultyColor: Record<string, string> = {
 export default function QuestionPage() {
   const { slug } = useParams()
   const [showHint, setShowHint] = useState(false)
+  const [showSteps, setShowSteps] = useState(false)
+  const [visibleSteps, setVisibleSteps] = useState(0)
+  const [showMistakes, setShowMistakes] = useState(false)
+
+  const storageKey = `notes-${slug}`
+  const [notes, setNotes] = useState(() => {
+    try { return localStorage.getItem(storageKey) || '' } catch { return '' }
+  })
+  const [saved, setSaved] = useState(true)
+
+  useEffect(() => {
+    const stored = localStorage.getItem(storageKey) || ''
+    setNotes(stored)
+    setSaved(true)
+  }, [storageKey])
+
+  const handleNotesChange = (value: string) => {
+    setNotes(value)
+    setSaved(false)
+  }
+
+  const handleSave = () => {
+    localStorage.setItem(storageKey, notes)
+    setSaved(true)
+  }
 
   const question = questions.find((q) => q.slug === slug)
   if (!question) return <div className="page"><h2>Question not found</h2><Link to="/">← Back</Link></div>
@@ -58,15 +83,88 @@ export default function QuestionPage() {
 
       <p className="description">{question.description}</p>
 
-      <button className="hint-btn" onClick={() => setShowHint(!showHint)}>
-        {showHint ? 'Hide Hint' : 'Show Hint'}
-      </button>
+      <div className="hint-actions">
+        <button className="hint-btn" onClick={() => setShowHint(!showHint)}>
+          {showHint ? 'Hide Hint' : 'Show Hint'}
+        </button>
+        <button
+          className="hint-btn mistakes-btn"
+          onClick={() => setShowMistakes(!showMistakes)}
+        >
+          {showMistakes ? 'Hide Mistakes' : 'Common Mistakes'}
+        </button>
+        <button
+          className="hint-btn steps-btn"
+          onClick={() => {
+            if (!showSteps) {
+              setShowSteps(true)
+              setVisibleSteps(1)
+            } else {
+              setShowSteps(false)
+              setVisibleSteps(0)
+            }
+          }}
+        >
+          {showSteps ? 'Hide Steps' : 'Step-by-Step Guide'}
+        </button>
+      </div>
 
       {showHint && (
         <div className="hint">
           <strong>Hint:</strong> {question.hint}
         </div>
       )}
+
+      {showMistakes && (
+        <div className="mistakes-container">
+          <h4>Common Mistakes to Avoid:</h4>
+          <ul className="mistakes-list">
+            {question.mistakes.map((mistake, i) => (
+              <li key={i} className="mistake-item">{mistake}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {showSteps && (
+        <div className="steps-container">
+          <h4>Step-by-Step Guide:</h4>
+          <ol className="steps-list">
+            {question.steps.slice(0, visibleSteps).map((step, i) => (
+              <li key={i} className="step-item">{step}</li>
+            ))}
+          </ol>
+          {visibleSteps < question.steps.length ? (
+            <button
+              className="next-step-btn"
+              onClick={() => setVisibleSteps(visibleSteps + 1)}
+            >
+              Show Next Step ({visibleSteps}/{question.steps.length})
+            </button>
+          ) : (
+            <p className="steps-done">All steps revealed!</p>
+          )}
+        </div>
+      )}
+
+      <hr className="divider" />
+
+      <div className="notes-section">
+        <h3>My Approach / Notes:</h3>
+        <textarea
+          className="notes-input"
+          placeholder="Write your thought process here... How are you planning to solve this? What approach are you thinking of?"
+          value={notes}
+          onChange={(e) => handleNotesChange(e.target.value)}
+          rows={4}
+        />
+        <div className="notes-footer">
+          <button className="save-btn" onClick={handleSave} disabled={saved}>
+            {saved ? 'Saved' : 'Save Notes'}
+          </button>
+          {saved && notes && <span className="saved-label">Saved to localStorage</span>}
+        </div>
+      </div>
 
       <hr className="divider" />
 
