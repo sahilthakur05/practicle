@@ -254,6 +254,7 @@ export const questions: Question[] = [
       { wrong: 'setActiveBtn("Multiple") with capital M but compared with === "single" lowercase', fix: 'Keep values consistent: use "multiple" (lowercase) everywhere to avoid silent comparison failures' },
       { wrong: 'handleSingleToggel only handled single mode — clicking in Multiple mode did nothing', fix: 'Handle both modes: if single → set/unset activeIndex, else → add/delete from a Set of open indexes' },
     ],
+    rating: { score: 5, comment: 'Had the right idea — mapped over faqData, added Single/Multiple buttons. But initially just listed answers with no toggle, hardcoded active button style, inconsistent string casing ("Multiple" vs "single"), and multi mode had no logic.' },
     difficulty: 'Easy',
   },
   {
