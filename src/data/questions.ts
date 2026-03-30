@@ -248,6 +248,12 @@ export const questions: Question[] = [
       'Using index as key when FAQ items can change — use a stable id',
       'Forgetting to reset state when switching between single and multi mode',
     ],
+    myMistakes: [
+      { wrong: 'faqData.map((data,index)=><><li key={index}>{data.answer}</li></>) — just listed answers, no toggle', fix: 'Wrap each item in a clickable button that toggles open/close based on activeIndex or a Set for multi mode' },
+      { wrong: 'Button style hardcoded: style={{ ...styles.modeBtn, ...styles.modeBtnActive }} on Single always', fix: 'Make it conditional: ...(activeBtn === "single" ? styles.modeBtnActive : {}) — so the active button highlights dynamically' },
+      { wrong: 'setActiveBtn("Multiple") with capital M but compared with === "single" lowercase', fix: 'Keep values consistent: use "multiple" (lowercase) everywhere to avoid silent comparison failures' },
+      { wrong: 'handleSingleToggel only handled single mode — clicking in Multiple mode did nothing', fix: 'Handle both modes: if single → set/unset activeIndex, else → add/delete from a Set of open indexes' },
+    ],
     difficulty: 'Easy',
   },
   {
