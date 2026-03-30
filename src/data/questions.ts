@@ -191,6 +191,17 @@ export const questions: Question[] = [
       'Not preserving input values when going Back — keep all data in one formData state',
       'Using separate useState for each field — use one object state for cleaner code',
     ],
+    myMistakes: [
+      { wrong: 'Used 6 separate useState for each field: useState("") for fullName, email, password, address, city, zipCode', fix: 'Use one formData object: useState({ fullName: "", email: "", ... }) — cleaner and prevents data loss between steps' },
+      { wrong: 'Validation alerts fire but dont block navigation: if (fullName.length < 2) alert("...") — no return, so setCurrentStep still runs', fix: 'Validate and return false to block: const validate = () => { if (bad) { setErrors({...}); return false } }; if (!validate()) return;' },
+      { wrong: 'if(currentStep===3) inside if(currentStep >= 3) { return } — step 3 submit code is unreachable', fix: 'Handle step 3 separately: onClick={currentStep === 3 ? handleSubmit : handleNext}' },
+      { wrong: 'No Back button — commented out', fix: 'Add Back button that decrements step without validation: onClick={() => setCurrentStep(step - 1)}' },
+      { wrong: 'Used alert() for validation errors instead of inline error display', fix: 'Use errors state + <span className="msf-error">{errors.field}</span> — the CSS class already exists' },
+      { wrong: 'Typo in variable name: setAdress instead of setAddress', fix: 'Double-check variable names — typos cause bugs that are hard to spot' },
+      { wrong: 'Used == instead of === for step comparison: currentStep == 2', fix: 'Always use strict equality === in React/TypeScript' },
+      { wrong: 'console.log(currentStep) left in component body — runs every render', fix: 'Remove all console.logs before submitting — they show sloppy code in interviews' },
+    ],
+    rating: { score: 5, comment: 'Knew the right structure — 3 steps, conditional rendering, state for each field, validation on Next. But validation logic was broken (alerts dont block), used 6 separate useState instead of one object, no Back button, typos, and console.logs left in.' },
     difficulty: 'Hard',
   },
   {
