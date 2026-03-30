@@ -43,6 +43,10 @@ export default function Home() {
       <h1>Top 10 React JS Interview Practicals</h1>
       <p className="subtitle">Click on a question to open its page and start coding</p>
 
+      <Link to="/daily" className="dp-home-link">
+        Daily Practice Sets — JS + React Logic →
+      </Link>
+
       <div className="score-section">
         <button className="score-toggle" onClick={() => setShowScore(!showScore)}>
           {showScore ? 'Hide' : 'Show'} My Progress — <strong>{scorecard.overall}/10</strong>

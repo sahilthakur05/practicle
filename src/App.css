@@ -1161,3 +1161,353 @@ h1 {
   color: var(--text-h);
   font-weight: 500;
 }
+
+/* ========== Daily Practice Home Link ========== */
+.dp-home-link {
+  display: block;
+  text-align: center;
+  padding: 14px 24px;
+  margin-bottom: 28px;
+  border: 1.5px solid var(--accent-border);
+  border-radius: 10px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.dp-home-link:hover {
+  opacity: 0.85;
+}
+
+/* ========== Daily Practice List ========== */
+.dp-days {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dp-day-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.2s;
+}
+
+.dp-day-card:hover {
+  box-shadow: var(--shadow);
+}
+
+.dp-day-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.dp-day-header h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 20px;
+}
+
+.dp-day-badge {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.dp-day-badge-lg {
+  font-size: 16px;
+  padding: 4px 16px;
+}
+
+.dp-date {
+  font-size: 13px;
+  color: var(--text);
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.dp-day-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.dp-tag {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.dp-day-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.dp-q-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--code-bg);
+  font-size: 13px;
+}
+
+.dp-q-type {
+  font-weight: 700;
+  font-size: 11px;
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.dp-q-title {
+  flex: 1;
+  color: var(--text-h);
+  font-weight: 500;
+}
+
+.dp-q-diff {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.dp-start-btn {
+  display: inline-block;
+}
+
+/* ========== Daily Practice Detail Page ========== */
+.dpq-page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.dpq-page-header h1 {
+  flex: 1;
+  margin: 0;
+  text-align: left;
+  font-size: 26px;
+}
+
+.dpq-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.dpq-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dpq-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.dpq-progress-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.dpq-section {
+  margin-bottom: 32px;
+}
+
+.dpq-section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.dpq-section-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.dpq-section-title {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text-h);
+}
+
+.dpq-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.dpq-card:hover {
+  box-shadow: var(--shadow);
+}
+
+.dpq-card.dpq-done {
+  border-color: #22c55e;
+  opacity: 0.75;
+}
+
+.dpq-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--code-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.dpq-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.dpq-check:hover {
+  border-color: var(--accent);
+}
+
+.dpq-check.dpq-checked {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #fff;
+}
+
+.dpq-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.dpq-title {
+  flex: 1;
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-h);
+}
+
+.dpq-body {
+  padding: 16px 18px;
+}
+
+.dpq-desc {
+  margin: 0 0 14px;
+  line-height: 1.7;
+  font-size: 14px;
+  color: var(--text-h);
+  white-space: pre-wrap;
+}
+
+.dpq-io {
+  margin-bottom: 12px;
+}
+
+.dpq-io-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dpq-code {
+  margin: 0;
+  padding: 12px 16px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: ui-monospace, Consolas, monospace;
+  line-height: 1.6;
+  color: var(--text-h);
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.dpq-constraints {
+  margin-bottom: 12px;
+}
+
+.dpq-constraint-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-h);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dpq-concepts {
+  margin-top: 12px;
+  padding: 20px 24px;
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+  background: var(--accent-bg);
+}
+
+.dpq-concepts h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+  color: var(--accent);
+}
+
+.dpq-concept-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-h);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
