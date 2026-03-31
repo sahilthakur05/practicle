@@ -85,7 +85,9 @@ export default function DailyPracticePage() {
           {completed.has(q.id) ? '✓' : ''}
         </button>
         <span className="dpq-num">Q{index + 1}</span>
-        <h3 className="dpq-title">{q.title}</h3>
+        <h3 className="dpq-title">
+          <Link to={`/daily/${set.day}/${q.id}`} className="question-link">{q.title}</Link>
+        </h3>
         <span
           className="difficulty"
           style={{ color: difficultyColor[q.difficulty], borderColor: difficultyColor[q.difficulty] }}
@@ -96,6 +98,9 @@ export default function DailyPracticePage() {
 
       <div className="dpq-body">
         <p className="dpq-desc">{q.description}</p>
+        <Link to={`/daily/${set.day}/${q.id}`} className="start-btn" style={{ display: 'inline-block', marginTop: 8, fontSize: 13 }}>
+          Start Coding →
+        </Link>
 
         {q.input && (
           <div className="dpq-io">
@@ -210,3 +215,5 @@ export default function DailyPracticePage() {
     </div>
   )
 }
+
+
