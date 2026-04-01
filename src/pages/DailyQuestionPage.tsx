@@ -11,6 +11,13 @@ import Day1_ToggleText from './daily/Day1_ToggleText'
 import Day1_TodoList from './daily/Day1_TodoList'
 import Day1_ProfileCard from './daily/Day1_ProfileCard'
 import Day1_Palindrome from './daily/Day1_Palindrome'
+// Day 1 Extra (improvement questions)
+import Day1_CleanString from './daily/Day1_CleanString'
+import Day1_ArrayTransform from './daily/Day1_ArrayTransform'
+import Day1_FizzBuzz from './daily/Day1_FizzBuzz'
+import Day1_ConditionalCard from './daily/Day1_ConditionalCard'
+import Day1_EditableList from './daily/Day1_EditableList'
+import Day1_CharFrequency from './daily/Day1_CharFrequency'
 
 // Day 2
 import Day2_StringCompression from './daily/Day2_StringCompression'
@@ -83,6 +90,12 @@ const componentMap: Record<string, React.FC> = {
   '1-7': Day1_TodoList,
   '1-8': Day1_ProfileCard,
   '1-9': Day1_Palindrome,
+  '1-10': Day1_CleanString,
+  '1-11': Day1_ArrayTransform,
+  '1-12': Day1_FizzBuzz,
+  '1-13': Day1_ConditionalCard,
+  '1-14': Day1_EditableList,
+  '1-15': Day1_CharFrequency,
   '2-1': Day2_StringCompression,
   '2-2': Day2_DeepClone,
   '2-3': Day2_RetryBackoff,

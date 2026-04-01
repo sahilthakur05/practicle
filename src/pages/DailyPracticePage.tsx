@@ -63,10 +63,12 @@ export default function DailyPracticePage() {
     })
   }
 
-  const jsQuestions = set.questions.filter(q => q.type === 'js')
-  const reactQuestions = set.questions.filter(q => q.type === 'react')
-  const projectQuestions = set.questions.filter(q => q.type === 'project')
-  const bonusQuestions = set.questions.filter(q => q.type === 'bonus')
+  const mainQuestions = set.questions.filter(q => q.id <= 9)
+  const extraQuestions = set.questions.filter(q => q.id >= 10)
+  const jsQuestions = mainQuestions.filter(q => q.type === 'js')
+  const reactQuestions = mainQuestions.filter(q => q.type === 'react')
+  const projectQuestions = mainQuestions.filter(q => q.type === 'project')
+  const bonusQuestions = mainQuestions.filter(q => q.type === 'bonus')
 
   const completedCount = completed.size
   const totalCount = set.questions.length
@@ -319,6 +321,19 @@ export default function DailyPracticePage() {
             <h2 className="dpq-section-title">{typeLabel.bonus}</h2>
           </div>
           {bonusQuestions.map((q, i) => renderQuestion(q, jsQuestions.length + reactQuestions.length + projectQuestions.length + i))}
+        </div>
+      )}
+
+      {extraQuestions.length > 0 && (
+        <div className="dpq-section" style={{ marginTop: 32 }}>
+          <div className="dpq-section-header">
+            <span className="dpq-section-icon" style={{ background: '#f59e0b20', color: '#f59e0b' }}>+</span>
+            <h2 className="dpq-section-title">Extra Practice — Improve Your Weak Spots</h2>
+          </div>
+          <p style={{ color: '#aaa', fontSize: 13, margin: '-8px 0 16px 0', padding: '8px 12px', background: '#f59e0b10', borderRadius: 6, border: '1px solid #f59e0b20' }}>
+            These questions target your specific mistakes from Day 1: .trim() vs .replace(), array methods, return values, conditional rendering, and input validation.
+          </p>
+          {extraQuestions.map((q, i) => renderQuestion(q, mainQuestions.length + i))}
         </div>
       )}
 
