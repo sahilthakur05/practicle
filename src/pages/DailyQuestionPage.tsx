@@ -2,15 +2,15 @@ import { useParams, Link } from 'react-router-dom'
 import { dailySets } from '../data/dailyPractice'
 
 // Day 1
-import Day1_FlattenNestedObject from './daily/Day1_FlattenNestedObject'
-import Day1_GroupByCount from './daily/Day1_GroupByCount'
-import Day1_PromiseAll from './daily/Day1_PromiseAll'
-import Day1_ConsecutiveSequence from './daily/Day1_ConsecutiveSequence'
-import Day1_StaleClosure from './daily/Day1_StaleClosure'
-import Day1_RaceCondition from './daily/Day1_RaceCondition'
-import Day1_DynamicFields from './daily/Day1_DynamicFields'
-import Day1_Pagination from './daily/Day1_Pagination'
-import Day1_Debounce from './daily/Day1_Debounce'
+import Day1_ReverseString from './daily/Day1_ReverseString'
+import Day1_FindLargest from './daily/Day1_FindLargest'
+import Day1_CountVowels from './daily/Day1_CountVowels'
+import Day1_RemoveDuplicates from './daily/Day1_RemoveDuplicates'
+import Day1_Counter from './daily/Day1_Counter'
+import Day1_ToggleText from './daily/Day1_ToggleText'
+import Day1_TodoList from './daily/Day1_TodoList'
+import Day1_ProfileCard from './daily/Day1_ProfileCard'
+import Day1_Palindrome from './daily/Day1_Palindrome'
 
 // Day 2
 import Day2_StringCompression from './daily/Day2_StringCompression'
@@ -74,15 +74,15 @@ import Day7_KanbanBoard from './daily/Day7_KanbanBoard'
 import Day7_VirtualDOM from './daily/Day7_VirtualDOM'
 
 const componentMap: Record<string, React.FC> = {
-  '1-1': Day1_FlattenNestedObject,
-  '1-2': Day1_GroupByCount,
-  '1-3': Day1_PromiseAll,
-  '1-4': Day1_ConsecutiveSequence,
-  '1-5': Day1_StaleClosure,
-  '1-6': Day1_RaceCondition,
-  '1-7': Day1_DynamicFields,
-  '1-8': Day1_Pagination,
-  '1-9': Day1_Debounce,
+  '1-1': Day1_ReverseString,
+  '1-2': Day1_FindLargest,
+  '1-3': Day1_CountVowels,
+  '1-4': Day1_RemoveDuplicates,
+  '1-5': Day1_Counter,
+  '1-6': Day1_ToggleText,
+  '1-7': Day1_TodoList,
+  '1-8': Day1_ProfileCard,
+  '1-9': Day1_Palindrome,
   '2-1': Day2_StringCompression,
   '2-2': Day2_DeepClone,
   '2-3': Day2_RetryBackoff,

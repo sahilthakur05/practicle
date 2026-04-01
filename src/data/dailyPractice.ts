@@ -8,6 +8,20 @@ export interface DailyQuestion {
   output?: string
   constraints?: string[]
   hints?: string[]
+  score?: number
+  feedbackSummary?: string
+}
+
+export interface SkillRating {
+  label: string
+  score: number
+}
+
+export interface DayFeedback {
+  overallScore: number
+  skillRatings: SkillRating[]
+  patterns: string[]
+  improvements: string[]
 }
 
 export interface DailySet {
@@ -16,151 +30,167 @@ export interface DailySet {
   title: string
   conceptsToRevise: string[]
   questions: DailyQuestion[]
+  feedback?: DayFeedback
 }
 
 export const dailySets: DailySet[] = [
   {
     day: 1,
     date: '2026-03-30',
-    title: 'Arrays, Closures & State Management',
+    title: 'Basics — Strings, Arrays & Your First React Components',
     conceptsToRevise: [
-      'Closures & stale state — why setTimeout inside a React handler captures old values, and how useRef or functional updates fix it',
-      'Race conditions in async React — cleanup functions in useEffect, abort controllers, and boolean flags to ignore stale responses',
-      'Set for O(n) lookups — when to use Set over Array for performance (consecutive sequence, deduplication)',
-      'Promise.all internals — how to track resolution order vs input order, and early rejection',
-      'Controlled components — why value + onChange matters for dynamic forms, and how to manage arrays in state',
+      'String methods — split, join, reverse, toLowerCase, toUpperCase',
+      'Array methods — map, filter, find, includes, indexOf, push, pop',
+      'useState in React — how to store and update values in a component',
+      'onClick handlers — how to run code when a button is clicked',
+      'Conditional rendering — showing/hiding things based on state',
     ],
     questions: [
       {
         id: 1,
-        title: 'Flatten Nested Object Keys',
+        title: 'Reverse a String',
         type: 'js',
-        difficulty: 'Medium',
-        description: 'Given a nested object, return a flat object where keys are dot-separated paths.',
-        input: '{ user: { name: "Sahil", address: { city: "Delhi", zip: 110001 } }, age: 24 }',
-        output: '{ "user.name": "Sahil", "user.address.city": "Delhi", "user.address.zip": 110001, "age": 24 }',
-        constraints: ['Handle any depth of nesting', 'Arrays are NOT included — only objects and primitives'],
+        difficulty: 'Easy',
+        description: 'Write a function that takes a string and returns it reversed.',
+        input: '"hello"',
+        output: '"olleh"',
+        constraints: ['Do not use the built-in .reverse() method on a string directly'],
+        score: 7,
+        feedbackSummary: 'Good logic with for loop, but left console.logs and unnecessary commented code',
       },
       {
         id: 2,
-        title: 'Group By and Count',
+        title: 'Find the Largest Number',
         type: 'js',
-        difficulty: 'Medium',
-        description: 'Given an array of objects, group them by a given key and return the count per group.',
-        input: `const orders = [
-  { item: "coffee", size: "M" },
-  { item: "tea", size: "M" },
-  { item: "coffee", size: "L" },
-  { item: "coffee", size: "M" },
-  { item: "tea", size: "S" },
-]
-groupAndCount(orders, "item")`,
-        output: '{ coffee: 3, tea: 2 }',
-        constraints: ['Should work with any key in the objects'],
+        difficulty: 'Easy',
+        description: 'Write a function that takes an array of numbers and returns the largest one.',
+        input: '[3, 7, 2, 9, 1]',
+        output: '9',
+        constraints: ['Do not use Math.max with spread — use a loop'],
+        score: 4,
+        feedbackSummary: 'Logic correct but returns 0 instead of max, initialized max=0 (fails for negatives), console.logs everywhere',
       },
       {
         id: 3,
-        title: 'Promise.all — Manual Implementation',
+        title: 'Count Vowels in a String',
         type: 'js',
-        difficulty: 'Medium',
-        description: 'Write your own version of Promise.all called promiseAll(promises).',
-        input: `promiseAll([
-  Promise.resolve(1),
-  new Promise(res => setTimeout(() => res(2), 100)),
-  Promise.resolve(3),
-])`,
-        output: '[1, 2, 3]',
-        constraints: [
-          'Results must be in the same order as input (not resolution order)',
-          'If any promise rejects, immediately reject with that reason',
-          'Handle empty array → resolve with []',
-        ],
+        difficulty: 'Easy',
+        description: 'Write a function that counts how many vowels (a, e, i, o, u) are in a given string.',
+        input: '"javascript"',
+        output: '3  // a, a, i',
+        constraints: ['Should be case-insensitive (handle "A" and "a" both)'],
+        score: 6,
+        feedbackSummary: 'Missing "e" from vowels array, no toLowerCase(), console.logs, unnecessary .split("")',
       },
       {
         id: 4,
-        title: 'Consecutive Sequence Finder',
+        title: 'Remove Duplicates from Array',
         type: 'js',
-        difficulty: 'Medium',
-        description: 'Given an unsorted array of numbers, find the length of the longest consecutive sequence.',
-        input: '[100, 4, 200, 1, 3, 2]',
-        output: '4  // sequence: 1, 2, 3, 4',
-        constraints: ['Must be better than O(n log n)', 'Think about using a Set'],
+        difficulty: 'Easy',
+        description: 'Write a function that removes duplicate values from an array and returns a new array with only unique values.',
+        input: '[1, 2, 2, 3, 4, 4, 5]',
+        output: '[1, 2, 3, 4, 5]',
+        constraints: ['Keep the original order of elements'],
+        score: 9,
+        feedbackSummary: 'Done by Claude — clean for loop with .includes() + .push(), no bugs',
       },
       {
         id: 5,
-        title: 'Stale Closure Bug',
+        title: 'Counter — Increment, Decrement & Reset',
         type: 'react',
-        difficulty: 'Medium',
-        description: `You have this component. The user clicks the button 3 times quickly. What does the alert show and why? Fix it.
-
-function Counter() {
-  const [count, setCount] = useState(0);
-  const handleClick = () => {
-    setCount(count + 1);
-    setTimeout(() => {
-      alert("Count is: " + count);
-    }, 2000);
-  };
-  return <button onClick={handleClick}>Click ({count})</button>;
-}`,
+        difficulty: 'Easy',
+        description: 'Build a counter component with three buttons: +1, -1, and Reset. Display the current count.',
         constraints: [
-          'What alert values appear after 3 fast clicks?',
-          'Why does this happen?',
-          'Write a fix using two different approaches',
+          'Count starts at 0',
+          'Reset button sets count back to 0',
+          'Display the current count value',
         ],
+        score: 8,
+        feedbackSummary: 'Works correctly, but stale placeholder text left in, should use functional updates',
       },
       {
         id: 6,
-        title: 'Race Condition in useEffect',
+        title: 'Toggle Show/Hide Text',
         type: 'react',
-        difficulty: 'Hard',
-        description: 'You have a search input that fetches results from an API. User types "react" quickly — r, re, rea, reac, react. Five API calls fire. The response for "rea" comes back AFTER "react". Your component now shows results for "rea" instead of "react".\n\nBuild a <Search /> component that fetches from https://dummyjson.com/products/search?q={query} on input change, has a 300ms debounce, and handles the race condition so stale responses are ignored. Show a loading state.',
+        difficulty: 'Easy',
+        description: 'Build a component with a button that toggles showing/hiding a paragraph of text. When you click the button, the text appears. Click again, it disappears.',
         constraints: [
-          'Do not use a library — handle the race condition yourself',
-          'Use cleanup in useEffect or an abort controller',
+          'Button text should change: "Show" / "Hide"',
+          'Use useState to track visibility',
         ],
+        score: 7,
+        feedbackSummary: 'Toggle works but button text always says "Show", stale placeholder text, commented code left in',
       },
       {
         id: 7,
-        title: 'Controlled Form with Dynamic Fields',
+        title: 'Simple Todo List',
         type: 'react',
-        difficulty: 'Medium',
-        description: 'Build a form where the user can add/remove "Skill" fields dynamically.\n\n- Start with one empty input\n- "Add Skill" button adds a new input\n- Each input has a "Remove" button (except if only 1 remains)\n- On submit, console.log the array of skills\n- All inputs must be controlled',
-        output: '["React", "Node.js", "TypeScript"]',
+        difficulty: 'Easy',
+        description: 'Build a simple todo list where you can type a task, click "Add" to add it to the list, and click "Delete" to remove it.',
+        constraints: [
+          'Input field + Add button',
+          'Display list of todos below',
+          'Each todo has a Delete button',
+          'Clear input after adding',
+        ],
+        score: 5,
+        feedbackSummary: 'Wrong setState syntax initially, no input validation, delete handler missing, stale placeholder text',
       },
       {
         id: 8,
-        title: 'Build a Pagination Component',
+        title: 'Profile Card Component',
         type: 'project',
-        difficulty: 'Medium',
-        description: 'Fetch 100 products from https://dummyjson.com/products?limit=100 and display them with pagination.',
+        difficulty: 'Easy',
+        description: 'Build a Profile Card that displays a user\'s name, bio, and a list of skills. Include an "Edit" button that switches to edit mode where you can change the name and bio.',
         constraints: [
-          'Show 10 products per page',
-          'Show page numbers (1, 2, 3... 10)',
-          'Highlight the current/active page',
-          'Previous / Next buttons (disabled on first/last page)',
-          'Show product name and price only',
-          'Do NOT use any pagination library',
+          'Show name, bio, and skills list',
+          'Edit button switches to input fields',
+          'Save button saves changes and switches back to view mode',
         ],
+        score: 5,
+        feedbackSummary: 'Edit mode shows below view instead of replacing, Edit button always visible, variable shadowing, stale text',
       },
       {
         id: 9,
-        title: 'Implement debounce from scratch',
+        title: 'Palindrome Checker',
         type: 'bonus',
-        difficulty: 'Hard',
-        description: `Write a debounce(fn, delay) function:
-
-const log = debounce((msg) => console.log(msg), 300);
-log("a");  // cancelled
-log("b");  // cancelled
-log("c");  // prints "c" after 300ms
-
-Then extend it to support a flush() method that immediately executes the pending call:
-
-log("hello");
-log.flush();  // immediately prints "hello"`,
+        difficulty: 'Easy',
+        description: 'Write a function that checks if a given string is a palindrome (reads the same forwards and backwards). Ignore spaces and capitalization.',
+        input: '"racecar"',
+        output: 'true',
+        constraints: ['Ignore case: "Racecar" → true', 'Ignore spaces: "nurses run" → true'],
+        score: 6,
+        feedbackSummary: 'Used .trim() instead of .replace(/\\s/g,"") — fails "nurses run" test, console.logs left in',
       },
     ],
+    feedback: {
+      overallScore: 6.3,
+      skillRatings: [
+        { label: 'Approach / Thinking', score: 7 },
+        { label: 'String Methods', score: 6 },
+        { label: 'Array Methods', score: 5 },
+        { label: 'Syntax / Typos', score: 5 },
+        { label: 'useState', score: 7 },
+        { label: 'JSX / Rendering', score: 5 },
+        { label: 'Code Cleanup', score: 3 },
+        { label: 'Edge Cases', score: 5 },
+      ],
+      patterns: [
+        'Console.log statements left in EVERY solution — always remove before finalizing',
+        'Correct approach but small implementation bugs (return 0, missing "e", .trim() vs .replace())',
+        'Stale placeholder text not cleaned up after implementing ("doesn\'t work yet" still showing)',
+        'Edit/view mode not properly switching — inputs added below instead of replacing content (Q8)',
+        'Variable shadowing — using same name for state and .map() parameter (Q8)',
+      ],
+      improvements: [
+        'Remove all console.logs before marking done — this is your #1 recurring issue',
+        'Always test your return value — does it actually return the right thing? (Q2 returned 0)',
+        'Use .replace(/\\s/g, "") to remove ALL spaces, not .trim() which only removes edges',
+        'Use ternary {isEditing ? <input/> : <text/>} to REPLACE content, not show both',
+        'Clean up stale placeholder text and commented-out code after implementing',
+        'Use functional updates for setState: setCount(prev => prev + 1)',
+      ],
+    },
   },
   {
     day: 2,

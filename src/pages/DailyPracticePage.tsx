@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState } from 'react'
 import { dailySets } from '../data/dailyPractice'
+import type { DayFeedback } from '../data/dailyPractice'
 
 const typeLabel: Record<string, string> = {
   js: 'JavaScript',
@@ -70,6 +71,95 @@ export default function DailyPracticePage() {
   const completedCount = completed.size
   const totalCount = set.questions.length
   const progress = Math.round((completedCount / totalCount) * 100)
+  const [showProgress, setShowProgress] = useState(false)
+
+  const getBarColor = (score: number) => {
+    if (score >= 7) return '#22c55e'
+    if (score >= 5) return '#f59e0b'
+    return '#ef4444'
+  }
+
+  const renderScorecard = (feedback: DayFeedback) => (
+    <div style={{ marginBottom: 24 }}>
+      <button
+        onClick={() => setShowProgress(!showProgress)}
+        style={{
+          width: '100%',
+          padding: '12px 20px',
+          background: '#8b5cf6',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 8,
+          cursor: 'pointer',
+          fontSize: 15,
+          fontWeight: 'bold',
+          textAlign: 'left',
+        }}
+      >
+        {showProgress ? 'Hide' : 'Show'} My Progress — {feedback.overallScore}/10
+      </button>
+
+      {showProgress && (
+        <div style={{
+          marginTop: 2,
+          padding: 24,
+          background: '#1a1a2e',
+          borderRadius: '0 0 12px 12px',
+          border: '1px solid #333',
+          borderTop: 'none',
+        }}>
+          {/* Big Score */}
+          <div style={{ textAlign: 'center', marginBottom: 24 }}>
+            <span style={{ fontSize: 56, fontWeight: 'bold', color: getBarColor(feedback.overallScore) }}>
+              {feedback.overallScore}
+            </span>
+            <span style={{ fontSize: 22, color: '#888' }}>/ 10</span>
+          </div>
+
+          {/* Skill Bars */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
+            {feedback.skillRatings.map((skill, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <span style={{ width: 160, textAlign: 'right', color: '#ccc', fontSize: 13, flexShrink: 0 }}>
+                  {skill.label}
+                </span>
+                <div style={{ flex: 1, height: 10, background: '#2a2a3e', borderRadius: 5, overflow: 'hidden' }}>
+                  <div style={{
+                    width: `${skill.score * 10}%`,
+                    height: '100%',
+                    background: getBarColor(skill.score),
+                    borderRadius: 5,
+                    transition: 'width 0.5s ease',
+                  }} />
+                </div>
+                <span style={{ width: 24, color: getBarColor(skill.score), fontWeight: 'bold', fontSize: 14 }}>
+                  {skill.score}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Patterns & Improvements */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            <div>
+              <h4 style={{ color: '#ef4444', marginTop: 0, marginBottom: 10 }}>Pattern of Mistakes</h4>
+              <ul style={{ margin: 0, paddingLeft: 18, color: '#ccc', fontSize: 13, lineHeight: 1.8 }}>
+                {feedback.patterns.map((p, i) => <li key={i}>{p}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h4 style={{ color: '#22c55e', marginTop: 0, marginBottom: 10 }}>
+                To Improve ({feedback.overallScore} → {Math.min(feedback.overallScore + 2, 10)})
+              </h4>
+              <ul style={{ margin: 0, paddingLeft: 18, color: '#ccc', fontSize: 13, lineHeight: 1.8 }}>
+                {feedback.improvements.map((imp, i) => <li key={i}>{imp}</li>)}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
 
   const renderQuestion = (q: typeof set.questions[0], index: number) => (
     <div
@@ -98,6 +188,32 @@ export default function DailyPracticePage() {
 
       <div className="dpq-body">
         <p className="dpq-desc">{q.description}</p>
+
+        {q.score != null && (
+          <div style={{
+            margin: '10px 0',
+            padding: '8px 14px',
+            background: q.score >= 7 ? '#22c55e15' : q.score >= 5 ? '#f59e0b15' : '#ef444415',
+            border: `1px solid ${q.score >= 7 ? '#22c55e40' : q.score >= 5 ? '#f59e0b40' : '#ef444440'}`,
+            borderRadius: 8,
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 10,
+          }}>
+            <span style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              color: q.score >= 7 ? '#22c55e' : q.score >= 5 ? '#f59e0b' : '#ef4444',
+              whiteSpace: 'nowrap',
+            }}>
+              {q.score}/10
+            </span>
+            <span style={{ color: '#aaa', fontSize: 13, lineHeight: 1.5 }}>
+              {q.feedbackSummary}
+            </span>
+          </div>
+        )}
+
         <Link to={`/daily/${set.day}/${q.id}`} className="start-btn" style={{ display: 'inline-block', marginTop: 8, fontSize: 13 }}>
           Start Coding →
         </Link>
@@ -163,6 +279,8 @@ export default function DailyPracticePage() {
         </div>
         <span className="dpq-progress-text">{completedCount}/{totalCount} completed</span>
       </div>
+
+      {set.feedback && renderScorecard(set.feedback)}
 
       {jsQuestions.length > 0 && (
         <div className="dpq-section">
