@@ -18,6 +18,12 @@ import Day1_FizzBuzz from './daily/day1/Day1_FizzBuzz'
 import Day1_ConditionalCard from './daily/day1/Day1_ConditionalCard'
 import Day1_EditableList from './daily/day1/Day1_EditableList'
 import Day1_CharFrequency from './daily/day1/Day1_CharFrequency'
+// Day 1 Round 2 (easier versions of weak topics)
+import Day1_FilterMap from './daily/day1/Day1_FilterMap'
+import Day1_ReduceBasics from './daily/day1/Day1_ReduceBasics'
+import Day1_ObjectCounter from './daily/day1/Day1_ObjectCounter'
+import Day1_TernaryRender from './daily/day1/Day1_TernaryRender'
+import Day1_SimpleEditMode from './daily/day1/Day1_SimpleEditMode'
 
 // Day 2
 import Day2_StringCompression from './daily/day2/Day2_StringCompression'
@@ -96,6 +102,11 @@ const componentMap: Record<string, React.FC> = {
   '1-13': Day1_ConditionalCard,
   '1-14': Day1_EditableList,
   '1-15': Day1_CharFrequency,
+  '1-16': Day1_FilterMap,
+  '1-17': Day1_ReduceBasics,
+  '1-18': Day1_ObjectCounter,
+  '1-19': Day1_TernaryRender,
+  '1-20': Day1_SimpleEditMode,
   '2-1': Day2_StringCompression,
   '2-2': Day2_DeepClone,
   '2-3': Day2_RetryBackoff,
