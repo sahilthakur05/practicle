@@ -172,6 +172,8 @@ export const dailySets: DailySet[] = [
         input: '"Hello World", "helloworld"',
         output: 'true',
         constraints: ['Use .replace(/\\s/g, "") NOT .trim()', 'Handle uppercase: "React JS" should match "reactjs"'],
+        score: 8,
+        feedbackSummary: 'Correct logic using .replace() and .toLowerCase(). Minor issues: no spaces around = operator, used let instead of const for non-reassigned variables.',
       },
       {
         id: 11,
@@ -192,6 +194,8 @@ export const dailySets: DailySet[] = [
         input: '15',
         output: '["1","2","Fizz","4","Buzz",...,"FizzBuzz"]',
         constraints: ['Check "both" (3 AND 5) FIRST — order matters!', 'Return an ARRAY of strings, not just print', 'Make sure to actually RETURN the result (your Q2 bug)'],
+        score: 4,
+        feedbackSummary: 'Used console.log instead of arr.push(), missing else-if so all conditions run, pushed numbers instead of strings — logic understood but not wired up correctly.',
       },
       {
         id: 13,
@@ -200,6 +204,8 @@ export const dailySets: DailySet[] = [
         difficulty: 'Easy',
         description: 'Build a product card with 3 modes: View (shows text + Edit/Delete buttons), Edit (shows inputs + Save/Cancel), Delete confirm (shows "Are you sure?" + Yes/No). Only ONE mode shows at a time.',
         constraints: ['Use ternary to REPLACE content, not show both (your Q8 bug)', 'Only show buttons relevant to current mode', 'Cancel in edit should NOT save changes'],
+        score: 3,
+        feedbackSummary: 'Default mode set to "delete", used && instead of ternary so product info shows in all modes, edit inputs not connected to state, delete mode is just a string, buttons have no handlers, typo "cancle".',
       },
       {
         id: 14,
@@ -208,6 +214,8 @@ export const dailySets: DailySet[] = [
         difficulty: 'Medium',
         description: 'Build a todo list with Add, Delete, AND inline Edit. Click edit on a todo → text becomes input → type new text → save. Combines your Q7 + Q8 weaknesses.',
         constraints: ['Validate: no empty todos', 'Delete with .filter()', 'Edit with .map() to update one item', 'Use unique IDs (Date.now()), not array index'],
+        score: 4,
+        feedbackSummary: 'Add and delete work but used string[] instead of objects, edit function is empty, used alert() for validation, console.log left in code, Fragment key issue, unstyled buttons.',
       },
       {
         id: 15,

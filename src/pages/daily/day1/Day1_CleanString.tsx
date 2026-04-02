@@ -8,6 +8,17 @@ export default function Day1_CleanString() {
   const [showExplanation, setShowExplanation] = useState(false)
   const [showHints, setShowHints] = useState(false)
   const [hintLevel, setHintLevel] = useState(0)
+  const [showFeedback, setShowFeedback] = useState(false)
+
+  const myMistakes = [
+    { issue: 'No spaces around operators', detail: 'Write cleaned1 = str1.replace(...) not cleaned1= str1.replace(...). Consistent spacing makes code more readable.' },
+    { issue: 'Using let instead of const', detail: 'cleaned1 and cleaned2 are never reassigned, so use const instead of let. Only use let when you plan to change the value later.' },
+  ]
+
+  const betterApproaches = [
+    { title: 'One-liner comparison (clean)', code: 'return str1.replace(/\\s/g, "").toLowerCase() === str2.replace(/\\s/g, "").toLowerCase();' },
+    { title: 'With a reusable clean helper', code: 'const clean = (s: string) => s.replace(/\\s/g, "").toLowerCase();\nreturn clean(str1) === clean(str2);' },
+  ]
 
   const hints = [
     '.trim() only removes spaces from START and END of a string — NOT from the middle!',
@@ -18,7 +29,13 @@ export default function Day1_CleanString() {
   function cleanAndCompare(str1: string, str2: string): boolean {
     // Clean both strings: remove ALL spaces, make lowercase, then compare
     // Write your solution here
-    return false
+
+
+    let cleaned1= str1.replace(/\s/g,"").toLowerCase()
+    let cleaned2= str2.replace(/\s/g,"").toLowerCase()
+
+    
+    return cleaned1===cleaned2
   }
 
   const testCases = [
@@ -86,6 +103,36 @@ cleanAndCompare("Hello", "World")             → false`}
 
       <button onClick={handleRun} style={{ marginTop: 12, padding: '8px 20px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer' }}>Run</button>
       {result && <pre style={{ marginTop: 12, background: '#0f3460', color: '#4ecca3', padding: 12, borderRadius: 8 }}>{result}</pre>}
+
+      <div style={{ marginTop: 20 }}>
+        <button
+          onClick={() => setShowFeedback(!showFeedback)}
+          style={{ padding: '8px 20px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          {showFeedback ? 'Hide Feedback' : 'My Mistakes & Feedback (Score: 8/10)'}
+        </button>
+        {showFeedback && (
+          <div style={{ marginTop: 10, background: '#1a1a2e', padding: 16, borderRadius: 8, border: '1px solid #ef4444', color: '#e0e0e0' }}>
+            <h4 style={{ color: '#ef4444', marginTop: 0 }}>Mistakes</h4>
+            {myMistakes.map((m, i) => (
+              <div key={i} style={{ marginBottom: 10, paddingLeft: 10, borderLeft: '3px solid #ef4444' }}>
+                <p style={{ margin: '4px 0', color: '#fca5a5', fontWeight: 'bold' }}>{i + 1}. {m.issue}</p>
+                <p style={{ margin: '4px 0', color: '#d1d5db', fontSize: 14 }}>{m.detail}</p>
+              </div>
+            ))}
+
+            <h4 style={{ color: '#22c55e', marginTop: 16 }}>Better Approaches</h4>
+            {betterApproaches.map((b, i) => (
+              <div key={i} style={{ marginBottom: 12 }}>
+                <p style={{ margin: '4px 0', color: '#86efac', fontWeight: 'bold' }}>{b.title}:</p>
+                <pre style={{ background: '#0f172a', color: '#4ecca3', padding: 10, borderRadius: 6, fontSize: 13, overflowX: 'auto' }}>
+                  {b.code}
+                </pre>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
