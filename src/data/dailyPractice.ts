@@ -184,6 +184,8 @@ export const dailySets: DailySet[] = [
         input: '[{name:"Sahil",score:85}, {name:"Amit",score:42}, ...]',
         output: '["Sahil","Priya","Raj","Neha"], avg=77.25, top="Priya"',
         constraints: ['Use .filter() + .map() for Task 1', 'Use .reduce() for Tasks 2 and 3', 'Do NOT use for loops'],
+        score: 0,
+        feedbackSummary: 'Not attempted — all three functions returned empty/zero. Solution added with step-by-step explanation of filter, map, and reduce.',
       },
       {
         id: 12,
@@ -226,6 +228,8 @@ export const dailySets: DailySet[] = [
         input: '"javascript"',
         output: '{ j:1, a:2, v:1, ... }, mostFrequent → "a"',
         constraints: ['Ignore spaces', 'Convert to lowercase first', 'Use an object to count: freq[char] = (freq[char] || 0) + 1'],
+        score: 1,
+        feedbackSummary: 'Attempted but wrong regex syntax, returns empty object. mostFrequent not attempted. Solution added with counting pattern explanation.',
       },
     ],
     feedback: {

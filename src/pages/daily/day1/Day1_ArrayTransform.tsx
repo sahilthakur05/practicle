@@ -8,6 +8,21 @@ export default function Day1_ArrayTransform() {
   const [showExplanation, setShowExplanation] = useState(false)
   const [showHints, setShowHints] = useState(false)
   const [hintLevel, setHintLevel] = useState(0)
+  const [showFeedback, setShowFeedback] = useState(false)
+  const [showSolution, setShowSolution] = useState(false)
+
+  const myMistakes = [
+    { issue: 'Not attempted — all functions return empty/zero', detail: 'None of the 3 functions were implemented. This is the most important topic to practice — .filter(), .map(), .reduce() are used everywhere in React.' },
+    { issue: 'Need to learn: .filter() keeps items matching a condition', detail: 'data.filter(s => s.score >= 50) returns a NEW array with only students who passed. Original array is unchanged.' },
+    { issue: 'Need to learn: .map() transforms each item', detail: 'data.map(s => s.name) takes an array of objects and returns an array of just names. Same length, different shape.' },
+    { issue: 'Need to learn: .reduce() combines everything into one value', detail: 'data.reduce((sum, s) => sum + s.score, 0) adds up all scores starting from 0. The accumulator (sum) carries the running total.' },
+  ]
+
+  const betterApproaches = [
+    { title: 'Task 1: filter + map chain', code: 'function getPassedNames(data) {\n  return data\n    .filter(s => s.score >= 50)  // keep passed\n    .map(s => s.name);            // extract names\n}' },
+    { title: 'Task 2: filter + reduce for average', code: 'function getPassedAverage(data) {\n  const passed = data.filter(s => s.score >= 50);\n  const total = passed.reduce((sum, s) => sum + s.score, 0);\n  return total / passed.length;\n}' },
+    { title: 'Task 3: reduce to find max', code: 'function getTopStudent(data) {\n  return data.reduce((best, curr) =>\n    curr.score > best.score ? curr : best\n  ).name;\n}' },
+  ]
 
   const hints = [
     '.filter(fn) keeps items where fn returns true. Example: [1,2,3,4].filter(n => n > 2) → [3,4]',
@@ -26,20 +41,19 @@ export default function Day1_ArrayTransform() {
 
   // Task 1: Get names of students who PASSED (score >= 50)
   function getPassedNames(data: { name: string; score: number }[]): string[] {
-    // Use .filter() then .map()
-    return []
+    return data.filter(s => s.score >= 50).map(s => s.name);
   }
 
   // Task 2: Get the AVERAGE score of passed students
   function getPassedAverage(data: { name: string; score: number }[]): number {
-    // Use .filter(), then .reduce() to sum, then divide by length
-    return 0
+    const passed = data.filter(s => s.score >= 50);
+    const total = passed.reduce((sum, s) => sum + s.score, 0);
+    return total / passed.length;
   }
 
   // Task 3: Get the HIGHEST scoring student's name
   function getTopStudent(data: { name: string; score: number }[]): string {
-    // Use .reduce() to find the student with highest score
-    return ''
+    return data.reduce((best, curr) => curr.score > best.score ? curr : best).name;
   }
 
   const handleRun = () => {
@@ -111,6 +125,84 @@ Task 3: Top student name
 
       <button onClick={handleRun} style={{ marginTop: 12, padding: '8px 20px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer' }}>Run</button>
       {result && <pre style={{ marginTop: 12, background: '#0f3460', color: '#4ecca3', padding: 12, borderRadius: 8, whiteSpace: 'pre-wrap' }}>{result}</pre>}
+
+      <div style={{ marginTop: 20 }}>
+        <button
+          onClick={() => setShowSolution(!showSolution)}
+          style={{ padding: '8px 20px', background: '#8b5cf6', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 'bold', marginRight: 8 }}
+        >
+          {showSolution ? 'Hide Solution' : 'Show Solution (You didn\'t solve this)'}
+        </button>
+        {showSolution && (
+          <div style={{ marginTop: 10, background: '#1a1a2e', padding: 16, borderRadius: 8, border: '1px solid #8b5cf6', color: '#e0e0e0' }}>
+            <h4 style={{ color: '#8b5cf6', marginTop: 0 }}>How each task works:</h4>
+
+            <div style={{ marginBottom: 16, paddingLeft: 10, borderLeft: '3px solid #3b82f6' }}>
+              <p style={{ margin: '6px 0', color: '#93c5fd', fontWeight: 'bold' }}>Task 1: getPassedNames — filter + map</p>
+              <p style={{ margin: '4px 0' }}><code>.filter(s =&gt; s.score &gt;= 50)</code> — keeps only students with score 50+</p>
+              <p style={{ margin: '4px 0' }}><code>.map(s =&gt; s.name)</code> — extracts just the name from each object</p>
+              <p style={{ margin: '4px 0', color: '#9ca3af' }}>Think: filter = "who passes?" then map = "give me their names"</p>
+            </div>
+
+            <div style={{ marginBottom: 16, paddingLeft: 10, borderLeft: '3px solid #f59e0b' }}>
+              <p style={{ margin: '6px 0', color: '#fbbf24', fontWeight: 'bold' }}>Task 2: getPassedAverage — filter + reduce</p>
+              <p style={{ margin: '4px 0' }}><code>.filter(s =&gt; s.score &gt;= 50)</code> — same filter as Task 1</p>
+              <p style={{ margin: '4px 0' }}><code>.reduce((sum, s) =&gt; sum + s.score, 0)</code> — adds up all scores, starting from 0</p>
+              <p style={{ margin: '4px 0' }}><code>total / passed.length</code> — divide sum by count = average</p>
+              <p style={{ margin: '4px 0', color: '#9ca3af' }}>Think: reduce is like a snowball rolling — it accumulates as it goes</p>
+            </div>
+
+            <div style={{ marginBottom: 12, paddingLeft: 10, borderLeft: '3px solid #22c55e' }}>
+              <p style={{ margin: '6px 0', color: '#86efac', fontWeight: 'bold' }}>Task 3: getTopStudent — reduce to find max</p>
+              <p style={{ margin: '4px 0' }}><code>.reduce((best, curr) =&gt; curr.score &gt; best.score ? curr : best)</code></p>
+              <p style={{ margin: '4px 0' }}>Compares each student to the current best. If higher score, replace best.</p>
+              <p style={{ margin: '4px 0' }}><code>.name</code> — extract the name at the end</p>
+              <p style={{ margin: '4px 0', color: '#9ca3af' }}>Think: reduce without initial value uses first element as starting "best"</p>
+            </div>
+
+            <h4 style={{ color: '#8b5cf6' }}>The cheat sheet:</h4>
+            <pre style={{ background: '#0f172a', color: '#4ecca3', padding: 10, borderRadius: 6, fontSize: 13 }}>
+{`.filter(fn)  → keeps items where fn returns true  → smaller array
+.map(fn)     → transforms every item with fn       → same-length array
+.reduce(fn, init) → combines all into one value     → single result
+
+// Chain them:
+data.filter(s => s.score >= 50).map(s => s.name)
+// = ["Sahil", "Priya", "Raj", "Neha"]`}
+            </pre>
+          </div>
+        )}
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <button
+          onClick={() => setShowFeedback(!showFeedback)}
+          style={{ padding: '8px 20px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          {showFeedback ? 'Hide Feedback' : 'My Mistakes & Feedback (Score: 0/10)'}
+        </button>
+        {showFeedback && (
+          <div style={{ marginTop: 10, background: '#1a1a2e', padding: 16, borderRadius: 8, border: '1px solid #ef4444', color: '#e0e0e0' }}>
+            <h4 style={{ color: '#ef4444', marginTop: 0 }}>Mistakes</h4>
+            {myMistakes.map((m, i) => (
+              <div key={i} style={{ marginBottom: 10, paddingLeft: 10, borderLeft: '3px solid #ef4444' }}>
+                <p style={{ margin: '4px 0', color: '#fca5a5', fontWeight: 'bold' }}>{i + 1}. {m.issue}</p>
+                <p style={{ margin: '4px 0', color: '#d1d5db', fontSize: 14 }}>{m.detail}</p>
+              </div>
+            ))}
+
+            <h4 style={{ color: '#22c55e', marginTop: 16 }}>Better Approaches</h4>
+            {betterApproaches.map((b, i) => (
+              <div key={i} style={{ marginBottom: 12 }}>
+                <p style={{ margin: '4px 0', color: '#86efac', fontWeight: 'bold' }}>{b.title}:</p>
+                <pre style={{ background: '#0f172a', color: '#4ecca3', padding: 10, borderRadius: 6, fontSize: 13, overflowX: 'auto' }}>
+                  {b.code}
+                </pre>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
